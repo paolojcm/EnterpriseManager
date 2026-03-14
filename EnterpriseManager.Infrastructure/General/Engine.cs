@@ -1,12 +1,27 @@
+using EnterpriseManager.Application.V1.Specific.City.Objects;
+using EnterpriseManager.Application.V1.Specific.City.Services;
+using EnterpriseManager.Application.V1.Specific.City.UseCases;
 using EnterpriseManager.Application.V1.Specific.Country.Objects;
 using EnterpriseManager.Application.V1.Specific.Country.Services;
 using EnterpriseManager.Application.V1.Specific.Country.UseCases;
+using EnterpriseManager.Application.V1.Specific.Enterprise.Objects;
+using EnterpriseManager.Application.V1.Specific.Enterprise.Services;
+using EnterpriseManager.Application.V1.Specific.Enterprise.UseCases;
+using EnterpriseManager.Application.V1.Specific.EnterpriseContact.Objects;
+using EnterpriseManager.Application.V1.Specific.EnterpriseContact.Services;
+using EnterpriseManager.Application.V1.Specific.EnterpriseContact.UseCases;
+using EnterpriseManager.Application.V1.Specific.Entrepreneur.Objects;
+using EnterpriseManager.Application.V1.Specific.Entrepreneur.Services;
+using EnterpriseManager.Application.V1.Specific.Entrepreneur.UseCases;
 using EnterpriseManager.Application.V1.Specific.MeanOfContact.Objects;
 using EnterpriseManager.Application.V1.Specific.MeanOfContact.Services;
 using EnterpriseManager.Application.V1.Specific.MeanOfContact.UseCases;
 using EnterpriseManager.Application.V1.Specific.OperatingSegment.Objects;
 using EnterpriseManager.Application.V1.Specific.OperatingSegment.Services;
 using EnterpriseManager.Application.V1.Specific.OperatingSegment.UseCases;
+using EnterpriseManager.Application.V1.Specific.State.Objects;
+using EnterpriseManager.Application.V1.Specific.State.Services;
+using EnterpriseManager.Application.V1.Specific.State.UseCases;
 using EnterpriseManager.Infrastructure.Specific.ILogger.Formatters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -32,16 +47,26 @@ namespace EnterpriseManager.Infrastructure.General
 
 		private void LoadApplicationServices(IServiceCollection iServiceCollection)
 		{
-			iServiceCollection.AddSingleton<IOperatingSegmentAppSpecServ, OperatingSegmentAppSpecServ>();
+			iServiceCollection.AddSingleton<ICityAppSpecServ, CityAppSpecServ>();
 			iServiceCollection.AddSingleton<ICountryAppSpecServ, CountryAppSpecServ>();
+			iServiceCollection.AddSingleton<IEnterpriseAppSpecServ, EnterpriseAppSpecServ>();
+			iServiceCollection.AddSingleton<IEnterpriseContactAppSpecServ, EnterpriseContactAppSpecServ>();
+			iServiceCollection.AddSingleton<IEntrepreneurAppSpecServ, EntrepreneurAppSpecServ>();
 			iServiceCollection.AddSingleton<IMeanOfContactAppSpecServ, MeanOfContactAppSpecServ>();
+			iServiceCollection.AddSingleton<IOperatingSegmentAppSpecServ, OperatingSegmentAppSpecServ>();
+			iServiceCollection.AddSingleton<IStateAppSpecServ, StateAppSpecServ>();
 		}
 
 		private void LoadUseCases(IServiceCollection iServiceCollection)
 		{
-			iServiceCollection.AddSingleton<IOperatingSegmentAppSpecUseCase, OperatingSegmentAppSpecUseCase>();
+			iServiceCollection.AddSingleton<ICityAppSpecUseCase, CityAppSpecUseCase>();
 			iServiceCollection.AddSingleton<ICountryAppSpecUseCase, CountryAppSpecUseCase>();
+			iServiceCollection.AddSingleton<IEnterpriseAppSpecUseCase, EnterpriseAppSpecUseCase>();
+			iServiceCollection.AddSingleton<IEnterpriseContactAppSpecUseCase, EnterpriseContactAppSpecUseCase>();
+			iServiceCollection.AddSingleton<IEntrepreneurAppSpecUseCase, EntrepreneurAppSpecUseCase>();
 			iServiceCollection.AddSingleton<IMeanOfContactAppSpecUseCase, MeanOfContactAppSpecUseCase>();
+			iServiceCollection.AddSingleton<IOperatingSegmentAppSpecUseCase, OperatingSegmentAppSpecUseCase>();
+			iServiceCollection.AddSingleton<IStateAppSpecUseCase, StateAppSpecUseCase>();
 		}
 
 		private void ConfigureSerilog(ConfigurationManager configurationManager)

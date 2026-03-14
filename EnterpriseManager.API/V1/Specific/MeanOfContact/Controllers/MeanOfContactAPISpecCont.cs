@@ -3,7 +3,7 @@ using EnterpriseManager.Application.V1.Specific.MeanOfContact.UseCases;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace EnterpriseManager.API.V1.Specific.Enterprise.Controllers
+namespace EnterpriseManager.API.V1.Specific.MeanOfContact.Controllers
 {
 	///<Summary>
 	/// This controller handles all MeanOfContact-related API requests.
@@ -33,7 +33,7 @@ namespace EnterpriseManager.API.V1.Specific.Enterprise.Controllers
 		/// <summary>
 		/// Get a MeanOfContact by Id.
 		/// </summary>
-		/// <param name="item"></param>
+		/// <param name="id"></param>
 		/// <returns>A MeanOfContact.</returns>
 		/// <remarks>
 		/// Sample reponse:

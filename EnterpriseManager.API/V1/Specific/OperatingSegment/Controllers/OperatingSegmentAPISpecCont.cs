@@ -3,7 +3,7 @@ using EnterpriseManager.Application.V1.Specific.OperatingSegment.UseCases;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace EnterpriseManager.API.V1.Specific.Enterprise.Controllers
+namespace EnterpriseManager.API.V1.Specific.OperatingSegment.Controllers
 {
 	///<Summary>
 	/// This controller handles all Operating Segment-related API requests.
@@ -33,7 +33,7 @@ namespace EnterpriseManager.API.V1.Specific.Enterprise.Controllers
 		/// <summary>
 		/// Get an Operation Segment by Id.
 		/// </summary>
-		/// <param name="item"></param>
+		/// <param name="id"></param>
 		/// <returns>An Operation Segment.</returns>
 		/// <remarks>
 		/// Sample reponse:
