@@ -1,3 +1,5 @@
+using EnterpriseManager.Infrastructure.General;
+
 namespace EnterpriseManager.API
 {
 	internal class Program

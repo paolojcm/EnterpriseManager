@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="8.0.0-nblumhardt-02322" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="10.1.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="10.1.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.1.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EnterpriseManager.Application\EnterpriseManager.Application.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -3,3 +3,5 @@ EnterpriseManager.Application/obj
 EnterpriseManager.API/bin
 .vs
 EnterpriseManager.API/obj
+EnterpriseManager.Infrastructure/bin
+EnterpriseManager.Infrastructure/obj

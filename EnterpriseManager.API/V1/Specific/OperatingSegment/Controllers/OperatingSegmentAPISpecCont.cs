@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EnterpriseManager.Application.V1.Specific.OperatingSegment.Objects;
+using EnterpriseManager.Application.V1.Specific.OperatingSegment.UseCases;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace EnterpriseManager.API.V1.Specific.Enterprise.Controllers
@@ -8,31 +10,37 @@ namespace EnterpriseManager.API.V1.Specific.Enterprise.Controllers
 	///</Summary>
 	[ApiController]
 	[Route("api/v1/[controller]")]
-	[Tags("OperatingSegment")]
+	[Tags("Operating Segment")]
 	[SwaggerTag("This controller handles all Operating Segment-related API requests.")]
 	public class OperatingSegmentAPISpecCont : ControllerBase
 	{
 		private readonly ILogger<OperatingSegmentAPISpecCont> _iLogger;
 
+		private IOperatingSegmentAppSpecUseCase _iOperatingSegmentAppSpecUseCase;
+
 		///<Summary>
 		/// OperatingSegmentAPISpecCont constructor.
 		///</Summary>
-		public OperatingSegmentAPISpecCont(ILogger<OperatingSegmentAPISpecCont> iLogger)
+		public OperatingSegmentAPISpecCont(
+			ILogger<OperatingSegmentAPISpecCont> iLogger,
+			IOperatingSegmentAppSpecUseCase iOperatingSegmentAppSpecUseCase
+		)
 		{
 			_iLogger = iLogger;
+			_iOperatingSegmentAppSpecUseCase = iOperatingSegmentAppSpecUseCase;
 		}
 
 		/// <summary>
 		/// Get an Operation Segment by Id.
 		/// </summary>
 		/// <param name="item"></param>
-		/// <returns>A newly created TodoItem</returns>
+		/// <returns>An Operation Segment.</returns>
 		/// <remarks>
 		/// Sample reponse:
 		///
 		///     {
 		///        "id": 1,
-		///        "name": "Item XXX",
+		///        "name": "Item GetTheInformationAboutTheRequest",
 		///     }
 		///
 		/// </remarks>
@@ -43,14 +51,9 @@ namespace EnterpriseManager.API.V1.Specific.Enterprise.Controllers
 		[EndpointDescription("It returns an Operation Segment by Id.")]
 		public JsonResult Get(long id)
 		{
-			string output = @"
-				{
-					""id"": 1,
-					""name"": ""Item XXX"",
-				}
-			";
+			OperatingSegmentAppSpecObje operatingSegmentAppSpecObje = _iOperatingSegmentAppSpecUseCase.Get(id);
 
-			return new JsonResult(output);
+			return new JsonResult(operatingSegmentAppSpecObje);
 		}
 	}
 }

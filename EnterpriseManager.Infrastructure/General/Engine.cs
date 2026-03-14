@@ -1,8 +1,25 @@
+using EnterpriseManager.Application.V1.Specific.Country.Objects;
+using EnterpriseManager.Application.V1.Specific.Country.Services;
+using EnterpriseManager.Application.V1.Specific.Country.UseCases;
+using EnterpriseManager.Application.V1.Specific.MeanOfContact.Objects;
+using EnterpriseManager.Application.V1.Specific.MeanOfContact.Services;
+using EnterpriseManager.Application.V1.Specific.MeanOfContact.UseCases;
+using EnterpriseManager.Application.V1.Specific.OperatingSegment.Objects;
+using EnterpriseManager.Application.V1.Specific.OperatingSegment.Services;
+using EnterpriseManager.Application.V1.Specific.OperatingSegment.UseCases;
+using EnterpriseManager.Infrastructure.Specific.ILogger.Formatters;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 using Microsoft.OpenApi;
+using Serilog;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 
-namespace EnterpriseManager.API
+namespace EnterpriseManager.Infrastructure.General
 {
 	///<Summary>
 	/// This class is the application engine.
@@ -15,6 +32,28 @@ namespace EnterpriseManager.API
 
 		private void LoadApplicationServices(IServiceCollection iServiceCollection)
 		{
+			iServiceCollection.AddSingleton<IOperatingSegmentAppSpecServ, OperatingSegmentAppSpecServ>();
+			iServiceCollection.AddSingleton<ICountryAppSpecServ, CountryAppSpecServ>();
+			iServiceCollection.AddSingleton<IMeanOfContactAppSpecServ, MeanOfContactAppSpecServ>();
+		}
+
+		private void LoadUseCases(IServiceCollection iServiceCollection)
+		{
+			iServiceCollection.AddSingleton<IOperatingSegmentAppSpecUseCase, OperatingSegmentAppSpecUseCase>();
+			iServiceCollection.AddSingleton<ICountryAppSpecUseCase, CountryAppSpecUseCase>();
+			iServiceCollection.AddSingleton<IMeanOfContactAppSpecUseCase, MeanOfContactAppSpecUseCase>();
+		}
+
+		private void ConfigureSerilog(ConfigurationManager configurationManager)
+		{
+			string? fullPathToTheLogFile = configurationManager["WindowsService:FullPathToTheLogFile"];
+
+			if (string.IsNullOrWhiteSpace(fullPathToTheLogFile))
+			{
+				fullPathToTheLogFile = $"{Path.Combine(AppContext.BaseDirectory, @"logs\EnterpriseManager.log")}";
+			}
+
+			Log.Logger = new LoggerConfiguration().WriteTo.File(fullPathToTheLogFile, rollingInterval: RollingInterval.Day).CreateLogger();
 		}
 
 		///<Summary>
@@ -25,6 +64,15 @@ namespace EnterpriseManager.API
 			WebApplicationBuilder webApplicationBuilder = WebApplication.CreateBuilder(args);
 			LoadInfrastructureServices(webApplicationBuilder.Services);
 			LoadApplicationServices(webApplicationBuilder.Services);
+			LoadUseCases(webApplicationBuilder.Services);
+			webApplicationBuilder.Logging.ClearProviders();
+			ConfigureSerilog(webApplicationBuilder.Configuration);
+			webApplicationBuilder.Logging.AddSerilog();
+			webApplicationBuilder.Logging.AddConsole(options =>
+			{
+				options.FormatterName = "CustomConsoleFormatter";
+			});
+			webApplicationBuilder.Logging.AddConsoleFormatter<CustomConsoleFormatter, ConsoleFormatterOptions>();
 			webApplicationBuilder.Services.AddControllers().AddXmlSerializerFormatters();
 			webApplicationBuilder.Services.AddEndpointsApiExplorer();
 			webApplicationBuilder.Services.AddSwaggerGen(swaggerGenOptions =>
@@ -162,6 +210,22 @@ namespace EnterpriseManager.API
 			webApplication.UseHttpsRedirection();
 			webApplication.UseCors("AllowAll");
 			webApplication.UseAuthorization();
+			webApplication.Use(async (context, next) =>
+			{
+				ILoggerFactory iLoggerFactory = context.RequestServices.GetRequiredService<ILoggerFactory>();
+				Microsoft.Extensions.Logging.ILogger iLogger = iLoggerFactory.CreateLogger("RequestLogger");
+				iLogger.LogInformation(
+					"Request: {Method} {Path} {QueryString}",
+					context.Request.Method,
+					context.Request.Path,
+					context.Request.QueryString);
+
+				await next();
+
+				iLogger.LogInformation(
+					"Response: {StatusCode}",
+					context.Response.StatusCode);
+			});
 			webApplication.MapControllers();
 			await webApplication.RunAsync();
 		}
