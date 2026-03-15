@@ -14,4 +14,8 @@
     <ProjectReference Include="..\EnterpriseManager.Domain\EnterpriseManager.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="V1\General\" />
+  </ItemGroup>
+
 </Project>

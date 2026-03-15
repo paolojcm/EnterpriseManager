@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace EnterpriseManager.Infrastructure.General.Objects
+namespace EnterpriseManager.Domain.General.Objects
 {
 	public class InfrastructureLayerException : Exception
 	{

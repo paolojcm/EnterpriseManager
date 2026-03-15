@@ -1,3 +1,4 @@
+using DatabaseUtilities.General.Services;
 using EnterpriseManager.Application.V1.Specific.City.Objects;
 using EnterpriseManager.Application.V1.Specific.City.Services;
 using EnterpriseManager.Application.V1.Specific.City.UseCases;
@@ -22,8 +23,13 @@ using EnterpriseManager.Application.V1.Specific.OperatingSegment.UseCases;
 using EnterpriseManager.Application.V1.Specific.State.Objects;
 using EnterpriseManager.Application.V1.Specific.State.Services;
 using EnterpriseManager.Application.V1.Specific.State.UseCases;
+using EnterpriseManager.Domain.Specific.City.Repositories;
+using EnterpriseManager.Domain.Specific.State.Repositories;
 using EnterpriseManager.Infrastructure.Specific.ILogger.Formatters;
+using EnterpriseManager.Persistence.Specific.City.Repositories;
+using EnterpriseManager.Persistence.Specific.State.Repositories;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -41,8 +47,55 @@ namespace EnterpriseManager.Infrastructure.General
 	///</Summary>
 	public class Engine
 	{
+		private void LoadASimpleConfiguration(ConfigurationManager configurationManager)
+		{
+			string? fullPathToTheLogFile = configurationManager["WindowsService:FullPathToTheLogFile"];
+			int theMaximumNumberOfConcurrentTasks = configurationManager.GetValue<int>("WindowsService:TheMaximumNumberOfConcurrentTasks");
+		}
+
+		private void LoadAComplexConfiguration(ConfigurationManager configurationManager, IServiceCollection iServiceCollection)
+		{
+			//IConfigurationSection way2PimSiteIConfSect = configurationManager.GetSection("Way2Pim.Site");
+			//iServiceCollection.Configure<Way2PimSiteConfigurationSectionInfrSpecObje>(way2PimSiteIConfSect);
+		}
+
+		private void LoadConfigurations(ConfigurationManager configurationManager, IServiceCollection iServiceCollection)
+		{
+			//String? environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production";
+
+			LoadASimpleConfiguration(configurationManager);
+			LoadAComplexConfiguration(configurationManager, iServiceCollection);
+		}
+
 		private void LoadInfrastructureServices(IServiceCollection iServiceCollection)
 		{
+		}
+
+		private void ConnectToTheDatabase(IServiceCollection iServiceCollection)
+		{
+			iServiceCollection.AddSingleton<IDatabaseUtilitiesSpecServ, DatabaseUtilitiesSpecServ>(_ =>
+			{
+				string fullPathToTheDatabaseFile = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", ".."));
+				fullPathToTheDatabaseFile = Path.Combine(fullPathToTheDatabaseFile, @"Database\Enterprise.sqlite");
+				SqliteConnection sqliteConnection = new SqliteConnection($@"Data Source={fullPathToTheDatabaseFile}");
+
+				try
+				{
+					sqliteConnection.Open();
+				}
+				catch (Exception exception)
+				{
+					Console.WriteLine($"An error occurred: {exception}");
+				}
+
+				return new DatabaseUtilitiesSpecServ(sqliteConnection);
+			});
+		}
+
+		private void LoadThePersistenceRepositories(IServiceCollection iServiceCollection)
+		{
+			iServiceCollection.AddSingleton<ICityDomaSpecRepo, CityInfrSpecRepo>();
+			iServiceCollection.AddSingleton<IStateDomaSpecRepo, StateInfrSpecRepo>();
 		}
 
 		private void LoadApplicationServices(IServiceCollection iServiceCollection)
@@ -71,11 +124,11 @@ namespace EnterpriseManager.Infrastructure.General
 
 		private void ConfigureSerilog(ConfigurationManager configurationManager)
 		{
-			string? fullPathToTheLogFile = configurationManager["WindowsService:FullPathToTheLogFile"];
+			string? fullPathToTheLogFile = configurationManager["EnterpriseManager.API:FullPathToTheLogFile"];
 
 			if (string.IsNullOrWhiteSpace(fullPathToTheLogFile))
 			{
-				fullPathToTheLogFile = $"{Path.Combine(AppContext.BaseDirectory, @"logs\EnterpriseManager.log")}";
+				fullPathToTheLogFile = $"{Path.Combine(AppContext.BaseDirectory, @"logs\EnterpriseManager.API.log")}";
 			}
 
 			Log.Logger = new LoggerConfiguration().WriteTo.File(fullPathToTheLogFile, rollingInterval: RollingInterval.Day).CreateLogger();
@@ -87,6 +140,9 @@ namespace EnterpriseManager.Infrastructure.General
 		public async Task StartAsync(string[] args)
 		{
 			WebApplicationBuilder webApplicationBuilder = WebApplication.CreateBuilder(args);
+			LoadConfigurations(webApplicationBuilder.Configuration, webApplicationBuilder.Services);
+			ConnectToTheDatabase(webApplicationBuilder.Services);
+			LoadThePersistenceRepositories(webApplicationBuilder.Services);
 			LoadInfrastructureServices(webApplicationBuilder.Services);
 			LoadApplicationServices(webApplicationBuilder.Services);
 			LoadUseCases(webApplicationBuilder.Services);

@@ -4,6 +4,12 @@ namespace EnterpriseManager.Application.V1.Specific.State.UseCases
 {
 	public interface IStateAppSpecUseCase
 	{
-		StateAppSpecObje Get(long id);
+		Task<StateAppSpecObje> GetStateByIdAsync(long id);
+
+		Task<IEnumerable<StateAppSpecObje>> GetStatesByAcronymOrName(string? acronymOrName);
+
+		Task<bool> InsertOrUpdateStateAsync(StateAppSpecObje? stateAppSpecObje);
+
+		Task<bool> DeleteStateByIdAsync(long id);
 	}
 }

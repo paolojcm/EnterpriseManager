@@ -4,6 +4,12 @@ namespace EnterpriseManager.Application.V1.Specific.City.UseCases
 {
 	public interface ICityAppSpecUseCase
 	{
-		CityAppSpecObje Get(long id);
+		Task<CityAppSpecObje> GetCityByIdAsync(long id);
+		
+		Task<IEnumerable<CityAppSpecObje>> GetCitiesByNameAsync(string? name);
+
+		Task<bool> InsertOrUpdateCityAsync(CityAppSpecObje? cityAppSpecObje);
+
+		Task<bool> DeleteCityByIdAsync(long id);
 	}
 }

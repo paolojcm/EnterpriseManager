@@ -1,9 +1,9 @@
 ﻿using EnterpriseManager.Application.V1.Specific.City.Objects;
 using EnterpriseManager.Application.V1.Specific.City.Services;
-using EnterpriseManager.Application.V1.Specific.City.UseCases;
+using EnterpriseManager.Application.V1.Specific.City.Services.Validators;
 using Microsoft.Extensions.Logging;
 
-namespace EnterpriseManager.Application.V1.Specific.OperatingSegment.UseCases
+namespace EnterpriseManager.Application.V1.Specific.City.UseCases
 {
 	public class CityAppSpecUseCase : ICityAppSpecUseCase
 	{
@@ -20,11 +20,35 @@ namespace EnterpriseManager.Application.V1.Specific.OperatingSegment.UseCases
 			_iCityAppSpecServ = iCityAppSpecServ;
 		}
 
-		public CityAppSpecObje Get(long id)
+		public async Task<CityAppSpecObje> GetCityByIdAsync(long id)
 		{
-			CityAppSpecObje CityAppSpecObje = _iCityAppSpecServ.Get(id);
+			CityAppSpecServVali.ValidateTheInputsOfTheGetCityByIdAsyncMethod(id);
+
+			CityAppSpecObje CityAppSpecObje = await _iCityAppSpecServ.GetCityByIdAsync(id);
 
 			return CityAppSpecObje;
+		}
+
+		public async Task<IEnumerable<CityAppSpecObje>> GetCitiesByNameAsync(string? name)
+		{
+			IEnumerable<CityAppSpecObje> CityAppSpecObje = await _iCityAppSpecServ.GetCitiesByNameAsync(name);
+
+			return CityAppSpecObje;
+		}
+
+		public async Task<bool> InsertOrUpdateCityAsync(CityAppSpecObje? cityAppSpecObje)
+		{
+			CityAppSpecServVali.ValidateTheInputsOfTheInsertOrUpdateCityAsyncMethod(cityAppSpecObje);
+			return await _iCityAppSpecServ.InsertOrUpdateCityAsync(cityAppSpecObje);
+		}
+
+		public async Task<bool> DeleteCityByIdAsync(long id)
+		{
+			CityAppSpecServVali.ValidateTheInputsOfTheDeleteCityByIdAsyncMethod(id);
+
+			bool output = await _iCityAppSpecServ.DeleteCityByIdAsync(id);
+
+			return output;
 		}
 	}
 }
