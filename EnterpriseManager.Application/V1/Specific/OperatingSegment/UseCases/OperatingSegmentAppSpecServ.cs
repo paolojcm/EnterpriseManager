@@ -1,5 +1,6 @@
 ﻿using EnterpriseManager.Application.V1.Specific.OperatingSegment.Objects;
 using EnterpriseManager.Application.V1.Specific.OperatingSegment.Services;
+using EnterpriseManager.Application.V1.Specific.OperatingSegment.Services.Validators;
 using Microsoft.Extensions.Logging;
 
 namespace EnterpriseManager.Application.V1.Specific.OperatingSegment.UseCases
@@ -7,7 +8,7 @@ namespace EnterpriseManager.Application.V1.Specific.OperatingSegment.UseCases
 	public class OperatingSegmentAppSpecUseCase : IOperatingSegmentAppSpecUseCase
 	{
 		private readonly ILogger<OperatingSegmentAppSpecUseCase> _iLogger;
-		
+
 		private IOperatingSegmentAppSpecServ _iOperatingSegmentAppSpecServ;
 
 		public OperatingSegmentAppSpecUseCase(
@@ -19,11 +20,35 @@ namespace EnterpriseManager.Application.V1.Specific.OperatingSegment.UseCases
 			_iOperatingSegmentAppSpecServ = iOperatingSegmentAppSpecServ;
 		}
 
-		public OperatingSegmentAppSpecObje Get(long id)
+		public async Task<OperatingSegmentAppSpecObje> GetOperatingSegmentByIdAsync(long id)
 		{
-			OperatingSegmentAppSpecObje operatingSegmentAppSpecObje = _iOperatingSegmentAppSpecServ.Get(id);
+			OperatingSegmentAppSpecServVali.ValidateTheInputsOfTheGetOperatingSegmentByIdAsyncMethod(id);
 
-			return operatingSegmentAppSpecObje;
+			OperatingSegmentAppSpecObje OperatingSegmentAppSpecObje = await _iOperatingSegmentAppSpecServ.GetOperatingSegmentByIdAsync(id);
+
+			return OperatingSegmentAppSpecObje;
+		}
+
+		public async Task<IEnumerable<OperatingSegmentAppSpecObje>> GetOperatingSegmentsByNameAsync(string? name)
+		{
+			IEnumerable<OperatingSegmentAppSpecObje> OperatingSegmentAppSpecObje = await _iOperatingSegmentAppSpecServ.GetOperatingSegmentsByNameAsync(name);
+
+			return OperatingSegmentAppSpecObje;
+		}
+
+		public async Task<bool> InsertOrUpdateOperatingSegmentAsync(OperatingSegmentAppSpecObje? operatingSegmentAppSpecObje)
+		{
+			OperatingSegmentAppSpecServVali.ValidateTheInputsOfTheInsertOrUpdateOperatingSegmentAsyncMethod(operatingSegmentAppSpecObje);
+			return await _iOperatingSegmentAppSpecServ.InsertOrUpdateOperatingSegmentAsync(operatingSegmentAppSpecObje);
+		}
+
+		public async Task<bool> DeleteOperatingSegmentByIdAsync(long id)
+		{
+			OperatingSegmentAppSpecServVali.ValidateTheInputsOfTheDeleteOperatingSegmentByIdAsyncMethod(id);
+
+			bool output = await _iOperatingSegmentAppSpecServ.DeleteOperatingSegmentByIdAsync(id);
+
+			return output;
 		}
 	}
 }

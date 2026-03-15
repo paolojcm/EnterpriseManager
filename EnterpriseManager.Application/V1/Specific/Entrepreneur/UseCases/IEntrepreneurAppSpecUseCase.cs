@@ -4,6 +4,12 @@ namespace EnterpriseManager.Application.V1.Specific.Entrepreneur.UseCases
 {
 	public interface IEntrepreneurAppSpecUseCase
 	{
-		EntrepreneurAppSpecObje Get(long id);
+		Task<EntrepreneurAppSpecObje> GetEntrepreneurByIdAsync(long id);
+
+		Task<IEnumerable<EntrepreneurAppSpecObje>> GetEntrepreneursByNameAsync(string? name);
+
+		Task<bool> InsertOrUpdateEntrepreneurAsync(EntrepreneurAppSpecObje? cityAppSpecObje);
+
+		Task<bool> DeleteEntrepreneurByIdAsync(long id);
 	}
 }

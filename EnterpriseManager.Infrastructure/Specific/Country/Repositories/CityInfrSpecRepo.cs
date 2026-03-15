@@ -31,11 +31,11 @@ namespace EnterpriseManager.Persistence.Specific.Country.Repositories
 
 			string sqlStatement = @"
 				SELECT
-					country1.*
+					coun1.*
 				FROM
-					Country country1
+					Country coun1
 				WHERE
-					country1.id = @id
+					coun1.id = @id
 			";
 
 			Dictionary<string, object> parametersWithTheirValues = new Dictionary<string, object>();
@@ -71,11 +71,11 @@ namespace EnterpriseManager.Persistence.Specific.Country.Repositories
 
 			string sqlStatement = @"
 				SELECT
-					country1.*
+					coun1.*
 				FROM
-					Country country1
+					Country coun1
 				WHERE
-					UPPER(country1.Name) like UPPER('%' || @name || '%')
+					UPPER(coun1.Name) like UPPER('%' || @name || '%')
 			";
 
 			Dictionary<string, object> parametersWithTheirValues = new Dictionary<string, object>();

@@ -4,6 +4,12 @@ namespace EnterpriseManager.Application.V1.Specific.OperatingSegment.Services
 {
 	public interface IOperatingSegmentAppSpecServ
 	{
-		OperatingSegmentAppSpecObje Get(long id);
+		Task<OperatingSegmentAppSpecObje> GetOperatingSegmentByIdAsync(long id);
+
+		Task<IEnumerable<OperatingSegmentAppSpecObje>> GetOperatingSegmentsByNameAsync(string? name);
+
+		Task<bool> InsertOrUpdateOperatingSegmentAsync(OperatingSegmentAppSpecObje? operatingSegmentAppSpecObje);
+
+		Task<bool> DeleteOperatingSegmentByIdAsync(long id);
 	}
 }

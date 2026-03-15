@@ -31,11 +31,11 @@ namespace EnterpriseManager.Persistence.Specific.State.Repositories
 
 			string sqlStatement = @"
 				SELECT
-					state1.*
+					stat1.*
 				FROM
-					State state1
+					State stat1
 				WHERE
-					state1.id = @id
+					stat1.id = @id
 			";
 
 			Dictionary<string, object> parametersWithTheirValues = new Dictionary<string, object>();
@@ -71,14 +71,14 @@ namespace EnterpriseManager.Persistence.Specific.State.Repositories
 
 			string sqlStatement = @"
 				SELECT
-					state1.*
+					stat1.*
 				FROM
-					State state1
+					State stat1
 				WHERE
 					(
-							(UPPER(state1.Acronym) like UPPER('%' || @acronym || '%'))
+							(UPPER(stat1.Acronym) like UPPER('%' || @acronym || '%'))
 						or
-							(UPPER(state1.Name) like UPPER('%' || @name || '%'))
+							(UPPER(stat1.Name) like UPPER('%' || @name || '%'))
 					)
 			";
 

@@ -25,10 +25,16 @@ using EnterpriseManager.Application.V1.Specific.State.Services;
 using EnterpriseManager.Application.V1.Specific.State.UseCases;
 using EnterpriseManager.Domain.Specific.City.Repositories;
 using EnterpriseManager.Domain.Specific.Country.Repositories;
+using EnterpriseManager.Domain.Specific.Entrepreneur.Repositories;
+using EnterpriseManager.Domain.Specific.MeanOfContact.Repositories;
+using EnterpriseManager.Domain.Specific.OperatingSegment.Repositories;
 using EnterpriseManager.Domain.Specific.State.Repositories;
 using EnterpriseManager.Infrastructure.Specific.ILogger.Formatters;
+using EnterpriseManager.Infrastructure.Specific.MeanOfContact.Repositories;
 using EnterpriseManager.Persistence.Specific.City.Repositories;
 using EnterpriseManager.Persistence.Specific.Country.Repositories;
+using EnterpriseManager.Persistence.Specific.Entrepreneur.Repositories;
+using EnterpriseManager.Persistence.Specific.OperatingSegment.Repositories;
 using EnterpriseManager.Persistence.Specific.State.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Data.Sqlite;
@@ -94,10 +100,13 @@ namespace EnterpriseManager.Infrastructure.General
 			});
 		}
 
-		private void LoadThePersistenceRepositories(IServiceCollection iServiceCollection)
+		private void LoadPersistenceRepositories(IServiceCollection iServiceCollection)
 		{
 			iServiceCollection.AddSingleton<ICityDomaSpecRepo, CityInfrSpecRepo>();
 			iServiceCollection.AddSingleton<ICountryDomaSpecRepo, CountryInfrSpecRepo>();
+			iServiceCollection.AddSingleton<IEntrepreneurDomaSpecRepo, EntrepreneurInfrSpecRepo>();
+			iServiceCollection.AddSingleton<IMeanOfContactDomaSpecRepo, MeanOfContactInfrSpecRepo>();
+			iServiceCollection.AddSingleton<IOperatingSegmentDomaSpecRepo, OperatingSegmentInfrSpecRepo>();
 			iServiceCollection.AddSingleton<IStateDomaSpecRepo, StateInfrSpecRepo>();
 		}
 
@@ -145,7 +154,7 @@ namespace EnterpriseManager.Infrastructure.General
 			WebApplicationBuilder webApplicationBuilder = WebApplication.CreateBuilder(args);
 			LoadConfigurations(webApplicationBuilder.Configuration, webApplicationBuilder.Services);
 			ConnectToTheDatabase(webApplicationBuilder.Services);
-			LoadThePersistenceRepositories(webApplicationBuilder.Services);
+			LoadPersistenceRepositories(webApplicationBuilder.Services);
 			LoadInfrastructureServices(webApplicationBuilder.Services);
 			LoadApplicationServices(webApplicationBuilder.Services);
 			LoadUseCases(webApplicationBuilder.Services);
