@@ -35,40 +35,40 @@ namespace EnterpriseManager.Application.V1.Specific.State.Objects
 			IEnumerable<StateDomaSpecEnti> statesDomaSpecEnti = await _iStateDomaSpecRepo.GetStatesByAcronymOrName(acronymOrName);
 			StateDomaSpecEntiVali.CheckIfTheEntitiesExist(statesDomaSpecEnti);
 
-			List<StateAppSpecObje> citiesAppSpecObje = new List<StateAppSpecObje>();
+			List<StateAppSpecObje> statesAppSpecObje = new List<StateAppSpecObje>();
 
 			StateAppSpecObje? stateAppSpecObje = null;
 
 			foreach (StateDomaSpecEnti stateDomaSpecEnti in statesDomaSpecEnti)
 			{
 				stateAppSpecObje = StateApplSpecMapp.MapToApplicationObject(stateDomaSpecEnti);
-				citiesAppSpecObje.Add(stateAppSpecObje);
+				statesAppSpecObje.Add(stateAppSpecObje);
 			}
 
-			return citiesAppSpecObje;
+			return statesAppSpecObje;
 		}
 
 		public async Task<bool> InsertOrUpdateStateAsync(StateAppSpecObje? stateAppSpecObje)
 		{
 			StateDomaSpecEnti newStateDomaSpecEnti = StateApplSpecMapp.MapToDomainEntity(stateAppSpecObje);
 
-			IEnumerable<StateDomaSpecEnti>? oldCitiesDomaSpecEnti = await _iStateDomaSpecRepo.GetStatesByAcronymOrName(newStateDomaSpecEnti.Acronym);
+			IEnumerable<StateDomaSpecEnti>? oldStatesDomaSpecEnti = await _iStateDomaSpecRepo.GetStatesByAcronymOrName(newStateDomaSpecEnti.Acronym);
 			if (
-					(oldCitiesDomaSpecEnti == null)
+					(oldStatesDomaSpecEnti == null)
 				||
-					(oldCitiesDomaSpecEnti.Count() == 0)
+					(oldStatesDomaSpecEnti.Count() == 0)
 			)
 			{
-				oldCitiesDomaSpecEnti = await _iStateDomaSpecRepo.GetStatesByAcronymOrName(newStateDomaSpecEnti.Name);
+				oldStatesDomaSpecEnti = await _iStateDomaSpecRepo.GetStatesByAcronymOrName(newStateDomaSpecEnti.Name);
 			}
 
 			if (newStateDomaSpecEnti.Id > 0)
 			{
-				StateDomaSpecEntiVali.CheckIfAnEntityAlreadyExistsBeforeUpdatingIt(oldCitiesDomaSpecEnti, newStateDomaSpecEnti);
+				StateDomaSpecEntiVali.CheckIfAnEntityAlreadyExistsBeforeUpdatingIt(oldStatesDomaSpecEnti, newStateDomaSpecEnti);
 			}
 			else
 			{
-				StateDomaSpecEntiVali.CheckIfAnEntityAlreadyExistsBeforeInsertingIt(oldCitiesDomaSpecEnti, newStateDomaSpecEnti);
+				StateDomaSpecEntiVali.CheckIfAnEntityAlreadyExistsBeforeInsertingIt(oldStatesDomaSpecEnti, newStateDomaSpecEnti);
 			}
 
 			return await _iStateDomaSpecRepo.InsertOrUpdateStateAsync(newStateDomaSpecEnti);

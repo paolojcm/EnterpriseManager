@@ -11,15 +11,15 @@ namespace EnterpriseManager.Domain.Specific.State.Entities.Validators
 				throw new DomainLayerException(HttpStatusCode.NotFound, $"State not found!");
 		}
 
-		public static void CheckIfTheEntitiesExist(IEnumerable<StateDomaSpecEnti>? citiesDomaSpecEnti)
+		public static void CheckIfTheEntitiesExist(IEnumerable<StateDomaSpecEnti>? statesDomaSpecEnti)
 		{
-			if ((citiesDomaSpecEnti == null) || (citiesDomaSpecEnti.Count() == 0))
-				throw new DomainLayerException(HttpStatusCode.NotFound, $"Cities not found!");
+			if ((statesDomaSpecEnti == null) || (statesDomaSpecEnti.Count() == 0))
+				throw new DomainLayerException(HttpStatusCode.NotFound, $"States not found!");
 		}
 
-		public static void CheckIfAnEntityAlreadyExistsBeforeUpdatingIt(IEnumerable<StateDomaSpecEnti>? oldCitiesDomaSpecEnti, StateDomaSpecEnti newStateDomaSpecEnti)
+		public static void CheckIfAnEntityAlreadyExistsBeforeUpdatingIt(IEnumerable<StateDomaSpecEnti>? oldStatesDomaSpecEnti, StateDomaSpecEnti newStateDomaSpecEnti)
 		{
-			if ((oldCitiesDomaSpecEnti != null) && (oldCitiesDomaSpecEnti.Count() > 0))
+			if ((oldStatesDomaSpecEnti != null) && (oldStatesDomaSpecEnti.Count() > 0))
 			{
 				if (newStateDomaSpecEnti == null)
 					throw new DomainLayerException(HttpStatusCode.InternalServerError, $"The {{field}} [{nameof(newStateDomaSpecEnti)}] cannot be null!");
@@ -27,7 +27,7 @@ namespace EnterpriseManager.Domain.Specific.State.Entities.Validators
 				if (string.IsNullOrWhiteSpace(newStateDomaSpecEnti.Name))
 					throw new DomainLayerException(HttpStatusCode.InternalServerError, $"The {{field}} [{nameof(newStateDomaSpecEnti.Name)}] cannot be null or empty or white space!");
 
-				foreach (StateDomaSpecEnti stateDomaSpecEnti in oldCitiesDomaSpecEnti)
+				foreach (StateDomaSpecEnti stateDomaSpecEnti in oldStatesDomaSpecEnti)
 				{
 					if (!string.IsNullOrWhiteSpace(stateDomaSpecEnti.Name))
 					{
@@ -43,9 +43,9 @@ namespace EnterpriseManager.Domain.Specific.State.Entities.Validators
 			}
 		}
 
-		public static void CheckIfAnEntityAlreadyExistsBeforeInsertingIt(IEnumerable<StateDomaSpecEnti>? oldCitiesDomaSpecEnti, StateDomaSpecEnti newStateDomaSpecEnti)
+		public static void CheckIfAnEntityAlreadyExistsBeforeInsertingIt(IEnumerable<StateDomaSpecEnti>? oldStatesDomaSpecEnti, StateDomaSpecEnti newStateDomaSpecEnti)
 		{
-			if ((oldCitiesDomaSpecEnti != null) && (oldCitiesDomaSpecEnti.Count() > 0))
+			if ((oldStatesDomaSpecEnti != null) && (oldStatesDomaSpecEnti.Count() > 0))
 			{
 				if (newStateDomaSpecEnti == null)
 					throw new DomainLayerException(HttpStatusCode.InternalServerError, $"The {{field}} [{nameof(newStateDomaSpecEnti)}] cannot be null!");
@@ -56,7 +56,7 @@ namespace EnterpriseManager.Domain.Specific.State.Entities.Validators
 				if (string.IsNullOrWhiteSpace(newStateDomaSpecEnti.Name))
 					throw new DomainLayerException(HttpStatusCode.InternalServerError, $"The {{field}} [{nameof(newStateDomaSpecEnti.Name)}] cannot be null or empty or white space!");
 
-				foreach (StateDomaSpecEnti stateDomaSpecEnti in oldCitiesDomaSpecEnti)
+				foreach (StateDomaSpecEnti stateDomaSpecEnti in oldStatesDomaSpecEnti)
 				{
 					if (
 							(!string.IsNullOrWhiteSpace(stateDomaSpecEnti.Acronym))

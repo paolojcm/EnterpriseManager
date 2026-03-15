@@ -24,9 +24,11 @@ using EnterpriseManager.Application.V1.Specific.State.Objects;
 using EnterpriseManager.Application.V1.Specific.State.Services;
 using EnterpriseManager.Application.V1.Specific.State.UseCases;
 using EnterpriseManager.Domain.Specific.City.Repositories;
+using EnterpriseManager.Domain.Specific.Country.Repositories;
 using EnterpriseManager.Domain.Specific.State.Repositories;
 using EnterpriseManager.Infrastructure.Specific.ILogger.Formatters;
 using EnterpriseManager.Persistence.Specific.City.Repositories;
+using EnterpriseManager.Persistence.Specific.Country.Repositories;
 using EnterpriseManager.Persistence.Specific.State.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Data.Sqlite;
@@ -95,6 +97,7 @@ namespace EnterpriseManager.Infrastructure.General
 		private void LoadThePersistenceRepositories(IServiceCollection iServiceCollection)
 		{
 			iServiceCollection.AddSingleton<ICityDomaSpecRepo, CityInfrSpecRepo>();
+			iServiceCollection.AddSingleton<ICountryDomaSpecRepo, CountryInfrSpecRepo>();
 			iServiceCollection.AddSingleton<IStateDomaSpecRepo, StateInfrSpecRepo>();
 		}
 

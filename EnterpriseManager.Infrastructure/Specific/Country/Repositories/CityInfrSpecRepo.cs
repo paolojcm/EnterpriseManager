@@ -1,23 +1,23 @@
 ﻿using DatabaseUtilities.General.Services;
 using EnterpriseManager.Domain.General.Objects;
-using EnterpriseManager.Domain.Specific.State.Entities;
-using EnterpriseManager.Domain.Specific.State.Repositories;
-using EnterpriseManager.Infrastructure.Specific.State.Mappers;
-using EnterpriseManager.Infrastructure.Specific.State.Models;
+using EnterpriseManager.Domain.Specific.Country.Entities;
+using EnterpriseManager.Domain.Specific.Country.Repositories;
+using EnterpriseManager.Infrastructure.Specific.Country.Mappers;
+using EnterpriseManager.Infrastructure.Specific.Country.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using System.Net;
 
-namespace EnterpriseManager.Persistence.Specific.State.Repositories
+namespace EnterpriseManager.Persistence.Specific.Country.Repositories
 {
-	public class StateInfrSpecRepo : IStateDomaSpecRepo
+	public class CountryInfrSpecRepo : ICountryDomaSpecRepo
 	{
-		private readonly ILogger<StateInfrSpecRepo> _iLogger;
+		private readonly ILogger<CountryInfrSpecRepo> _iLogger;
 
 		private IDatabaseUtilitiesSpecServ _iDatabaseUtilitiesSpecServ;
 
-		public StateInfrSpecRepo(
-			ILogger<StateInfrSpecRepo> iLogger,
+		public CountryInfrSpecRepo(
+			ILogger<CountryInfrSpecRepo> iLogger,
 			IDatabaseUtilitiesSpecServ iDatabaseUtilitiesSpecServ
 		)
 		{
@@ -25,32 +25,32 @@ namespace EnterpriseManager.Persistence.Specific.State.Repositories
 			_iDatabaseUtilitiesSpecServ = iDatabaseUtilitiesSpecServ;
 		}
 
-		public async Task<StateDomaSpecEnti> GetStateByIdAsync(long id)
+		public async Task<CountryDomaSpecEnti> GetCountryByIdAsync(long id)
 		{
-			StateDomaSpecEnti? stateDomaSpecEnti = null;
+			CountryDomaSpecEnti? countryDomaSpecEnti = null;
 
 			string sqlStatement = @"
 				SELECT
-					state1.*
+					country1.*
 				FROM
-					State state1
+					Country country1
 				WHERE
-					state1.id = @id
+					country1.id = @id
 			";
 
 			Dictionary<string, object> parametersWithTheirValues = new Dictionary<string, object>();
 			parametersWithTheirValues.Add("@id", id);
 
 			Guid guid = Guid.NewGuid();
-			_iLogger.LogDebug($"{guid} | {{class}}: [StatePersSpecRepo] -> {{method}}: [GetTheStateByIdAsync]");
+			_iLogger.LogDebug($"{guid} | {{class}}: [CountryPersSpecRepo] -> {{method}}: [GetTheCountryByIdAsync]");
 			_iLogger.LogDebug($"{guid} | [query]: ({sqlStatement})");
 			_iLogger.LogDebug($"{guid} | [@id]: ({id})");
 
 			try
 			{
-				StateInfrSpecMode stateInfrSpecMode = await _iDatabaseUtilitiesSpecServ.GetObjectAsync<StateInfrSpecMode>(null, sqlStatement, parametersWithTheirValues);
+				CountryInfrSpecMode countryInfrSpecMode = await _iDatabaseUtilitiesSpecServ.GetObjectAsync<CountryInfrSpecMode>(null, sqlStatement, parametersWithTheirValues);
 
-				stateDomaSpecEnti = StateInfrSpecMapp.MapToDomainEntity(stateInfrSpecMode);
+				countryDomaSpecEnti = CountryInfrSpecMapp.MapToDomainEntity(countryInfrSpecMode);
 			}
 			catch (InfrastructureLayerException)
 			{
@@ -62,47 +62,41 @@ namespace EnterpriseManager.Persistence.Specific.State.Repositories
 				throw new InfrastructureLayerException(HttpStatusCode.InternalServerError, exception.Message);
 			}
 
-			return stateDomaSpecEnti;
+			return countryDomaSpecEnti;
 		}
 
-		public async Task<IEnumerable<StateDomaSpecEnti>> GetStatesByAcronymOrName(string? acronymOrName)
+		public async Task<IEnumerable<CountryDomaSpecEnti>> GetCountriesByNameAsync(string? name)
 		{
-			List<StateDomaSpecEnti>? statesDomaSpecEnti = null;
+			List<CountryDomaSpecEnti>? countriesDomaSpecEnti = null;
 
 			string sqlStatement = @"
 				SELECT
-					state1.*
+					country1.*
 				FROM
-					State state1
+					Country country1
 				WHERE
-					(
-							(UPPER(state1.Acronym) like UPPER('%' || @acronym || '%'))
-						or
-							(UPPER(state1.Name) like UPPER('%' || @name || '%'))
-					)
+					UPPER(country1.Name) like UPPER('%' || @name || '%')
 			";
 
 			Dictionary<string, object> parametersWithTheirValues = new Dictionary<string, object>();
-			parametersWithTheirValues.Add("@acronym", $"{acronymOrName}");
-			parametersWithTheirValues.Add("@name", $"{acronymOrName}");
+			parametersWithTheirValues.Add("@name", name);
 
 			Guid guid = Guid.NewGuid();
-			_iLogger.LogDebug($"{guid} | {{class}}: [StatePersSpecRepo] -> {{method}}: [GetStateByNameAsync]");
+			_iLogger.LogDebug($"{guid} | {{class}}: [CountryPersSpecRepo] -> {{method}}: [GetCountryByNameAsync]");
 			_iLogger.LogDebug($"{guid} | [query]: ({sqlStatement})");
-			_iLogger.LogDebug($"{guid} | [@acronym]: ({acronymOrName})");
-			_iLogger.LogDebug($"{guid} | [@name]: ({acronymOrName})");
+			_iLogger.LogDebug($"{guid} | [@name]: ({name})");
 
 			try
 			{
-				IEnumerable<StateInfrSpecMode> statesInfrSpecMode = await _iDatabaseUtilitiesSpecServ.GetObjectsAsync<StateInfrSpecMode>(null, sqlStatement, parametersWithTheirValues);
-				if ((statesInfrSpecMode != null) && (statesInfrSpecMode.Count() > 0))
+				IEnumerable<CountryInfrSpecMode> countriesInfrSpecMode = await _iDatabaseUtilitiesSpecServ.GetObjectsAsync<CountryInfrSpecMode>(null, sqlStatement, parametersWithTheirValues);
+				if ((countriesInfrSpecMode != null) && (countriesInfrSpecMode.Count() > 0))
 				{
-					statesDomaSpecEnti = new List<StateDomaSpecEnti>();
-					StateDomaSpecEnti? stateDomaSpecEnti = null;
-					foreach (StateInfrSpecMode stateInfrSpecMode in statesInfrSpecMode)
+					countriesDomaSpecEnti = new List<CountryDomaSpecEnti>();
+					CountryDomaSpecEnti? countryDomaSpecEnti = null;
+					foreach (CountryInfrSpecMode countryInfrSpecMode in countriesInfrSpecMode)
 					{
-						stateDomaSpecEnti = StateInfrSpecMapp.MapToDomainEntity(stateInfrSpecMode);
-						statesDomaSpecEnti.Add(stateDomaSpecEnti);
+						countryDomaSpecEnti = CountryInfrSpecMapp.MapToDomainEntity(countryInfrSpecMode);
+						countriesDomaSpecEnti.Add(countryDomaSpecEnti);
 					}
 				}
 			}
@@ -116,10 +110,10 @@ namespace EnterpriseManager.Persistence.Specific.State.Repositories
 				throw new InfrastructureLayerException(HttpStatusCode.InternalServerError, exception.Message);
 			}
 
-			return statesDomaSpecEnti;
+			return countriesDomaSpecEnti;
 		}
 
-		private async Task<bool> InsertStateAsync(StateDomaSpecEnti stateDomaSpecEnti)
+		private async Task<bool> InsertCountryAsync(CountryDomaSpecEnti countryDomaSpecEnti)
 		{
 			bool output = false;
 
@@ -127,28 +121,24 @@ namespace EnterpriseManager.Persistence.Specific.State.Repositories
 
 			string sqlStatement = @"
 				INSERT INTO
-					State (Acronym, Name, CountryId)
+					Country (Name)
 				VALUES 
-					(@acronym, @name, @countryId)
+					(@name)
 			";
 
 			Guid guid = Guid.NewGuid();
-			_iLogger.LogDebug($"{guid} | {{class}}: [StatePersSpecRepo] -> {{method}}: [InsertStateAsync]");
+			_iLogger.LogDebug($"{guid} | {{class}}: [CountryPersSpecRepo] -> {{method}}: [InsertCountryAsync]");
 			_iLogger.LogDebug($"{guid} | [query]: ({sqlStatement})");
 
 			try
 			{
 				sqliteTransaction = (SqliteTransaction)_iDatabaseUtilitiesSpecServ.GetConnection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-				StateInfrSpecMode stateInfrSpecMode = StateInfrSpecMapp.MapToPersistenceModel(stateDomaSpecEnti);
-				_iLogger.LogDebug($"{guid} | [acronym]: ({stateInfrSpecMode.Acronym})");
-				_iLogger.LogDebug($"{guid} | [name]: ({stateInfrSpecMode.Name})");
-				_iLogger.LogDebug($"{guid} | [countryId]: ({stateInfrSpecMode.CountryId})");
+				CountryInfrSpecMode countryInfrSpecMode = CountryInfrSpecMapp.MapToPersistenceModel(countryDomaSpecEnti);
+				_iLogger.LogDebug($"{guid} | [name]: ({countryInfrSpecMode.Name})");
 
 				Dictionary<string, object> parametersWithTheirValues = new Dictionary<string, object>();
-				parametersWithTheirValues.Add("@acronym", stateInfrSpecMode.Acronym);
-				parametersWithTheirValues.Add("@name", stateInfrSpecMode.Name);
-				parametersWithTheirValues.Add("@countryId", stateInfrSpecMode.CountryId);
+				parametersWithTheirValues.Add("@name", countryInfrSpecMode.Name);
 
 				await _iDatabaseUtilitiesSpecServ.ExecuteNonQueryAsync(sqliteTransaction, sqlStatement, parametersWithTheirValues);
 
@@ -173,7 +163,7 @@ namespace EnterpriseManager.Persistence.Specific.State.Repositories
 			return output;
 		}
 
-		private async Task<bool> UpdateStateAsync(StateDomaSpecEnti stateDomaSpecEnti)
+		private async Task<bool> UpdateCountryAsync(CountryDomaSpecEnti countryDomaSpecEnti)
 		{
 			bool output = false;
 
@@ -181,34 +171,28 @@ namespace EnterpriseManager.Persistence.Specific.State.Repositories
 
 			string sqlStatement = @"
 				UPDATE 
-					State 
+					Country 
 				SET
-					Acronym = @acronym,
-					Name = @name,
-					CountryId = @countryId
+					Name = @name
 				WHERE
 					Id = @id
 			";
 
 			Guid guid = Guid.NewGuid();
-			_iLogger.LogDebug($"{guid} | {{class}}: [StatePersSpecRepo] -> {{method}}: [UpdateStateAsync]");
+			_iLogger.LogDebug($"{guid} | {{class}}: [CountryPersSpecRepo] -> {{method}}: [UpdateCountryAsync]");
 			_iLogger.LogDebug($"{guid} | [query]: ({sqlStatement})");
 
 			try
 			{
 				sqliteTransaction = (SqliteTransaction)_iDatabaseUtilitiesSpecServ.GetConnection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-				StateInfrSpecMode stateInfrSpecMode = StateInfrSpecMapp.MapToPersistenceModel(stateDomaSpecEnti);
-				_iLogger.LogDebug($"{guid} | [acronym]: ({stateInfrSpecMode.Acronym})");
-				_iLogger.LogDebug($"{guid} | [name]: ({stateInfrSpecMode.Name})");
-				_iLogger.LogDebug($"{guid} | [stateId]: ({stateInfrSpecMode.CountryId})");
-				_iLogger.LogDebug($"{guid} | [id]: ({stateInfrSpecMode.Id})");
+				CountryInfrSpecMode countryInfrSpecMode = CountryInfrSpecMapp.MapToPersistenceModel(countryDomaSpecEnti);
+				_iLogger.LogDebug($"{guid} | [name]: ({countryInfrSpecMode.Name})");
+				_iLogger.LogDebug($"{guid} | [id]: ({countryInfrSpecMode.Id})");
 
 				Dictionary<string, object> parametersWithTheirValues = new Dictionary<string, object>();
-				parametersWithTheirValues.Add("@acronym", stateInfrSpecMode.Acronym);
-				parametersWithTheirValues.Add("@name", stateInfrSpecMode.Name);
-				parametersWithTheirValues.Add("@countryId", stateInfrSpecMode.CountryId);
-				parametersWithTheirValues.Add("@id", stateInfrSpecMode.Id);
+				parametersWithTheirValues.Add("@name", countryInfrSpecMode.Name);
+				parametersWithTheirValues.Add("@id", countryInfrSpecMode.Id);
 
 				await _iDatabaseUtilitiesSpecServ.ExecuteNonQueryAsync(sqliteTransaction, sqlStatement, parametersWithTheirValues);
 
@@ -233,23 +217,23 @@ namespace EnterpriseManager.Persistence.Specific.State.Repositories
 			return output;
 		}
 
-		public async Task<bool> InsertOrUpdateStateAsync(StateDomaSpecEnti stateDomaSpecEnti)
+		public async Task<bool> InsertOrUpdateCountryAsync(CountryDomaSpecEnti countryDomaSpecEnti)
 		{
 			bool output = false;
 
-			if (stateDomaSpecEnti.Id == 0)
+			if (countryDomaSpecEnti.Id == 0)
 			{
-				output = await InsertStateAsync(stateDomaSpecEnti);
+				output = await InsertCountryAsync(countryDomaSpecEnti);
 			}
 			else
 			{
-				output = await UpdateStateAsync(stateDomaSpecEnti);
+				output = await UpdateCountryAsync(countryDomaSpecEnti);
 			}
 
 			return output;
 		}
 
-		public async Task<bool> DeleteStateByIdAsync(long id)
+		public async Task<bool> DeleteCountryByIdAsync(long id)
 		{
 			bool output = false;
 
@@ -258,13 +242,13 @@ namespace EnterpriseManager.Persistence.Specific.State.Repositories
 			string sqlStatement = @"
 				DELETE 
 				FROM
-					State
+					Country
 				WHERE 
 					Id = @id
 			";
 
 			Guid guid = Guid.NewGuid();
-			_iLogger.LogDebug($"{guid} | {{class}}: [StatePersSpecRepo] -> {{method}}: [DeleteStateByIdAsync]");
+			_iLogger.LogDebug($"{guid} | {{class}}: [CountryPersSpecRepo] -> {{method}}: [DeleteCountryByIdAsync]");
 			_iLogger.LogDebug($"{guid} | [query]: ({sqlStatement})");
 
 			try
