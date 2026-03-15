@@ -1,7 +1,14 @@
-﻿using EnterpriseManager.Application.V1.Specific.City.Objects;
+﻿using EnterpriseManager.Application.V1.General;
+using EnterpriseManager.Application.V1.Specific.City.Objects;
+using EnterpriseManager.Application.V1.Specific.City.Services.Validators;
 using EnterpriseManager.Application.V1.Specific.City.UseCases;
+using EnterpriseManager.Domain.General.Objects;
+using EnterpriseManager.Domain.Specific.City.Entities;
+using EnterpriseManager.Domain.Specific.City.Entities.Validators;
+using EnterpriseManager.Infrastructure.General.Objects;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Net;
 
 namespace EnterpriseManager.API.V1.Specific.City.Controllers
 {
@@ -49,11 +56,72 @@ namespace EnterpriseManager.API.V1.Specific.City.Controllers
 		[HttpGet("get")]
 		[EndpointSummary("It returns a City.")]
 		[EndpointDescription("It returns a City by Id.")]
-		public JsonResult Get(long id)
+		[ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CityAppSpecObje))]
+		[ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorWithDetails))]
+		[ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorWithDetails))]
+		public IActionResult Get(long id)
 		{
-			CityAppSpecObje CityAppSpecObje = _iCityAppSpecUseCase.Get(id);
+			IActionResult? iActionResult = null;
 
-			return new JsonResult(CityAppSpecObje);
+			ErrorWithDetails? errorDetails = null;
+
+			try
+			{
+				CityAppSpecServVali.ValidateTheInputsOfTheGetMethod(id);
+
+				CityAppSpecObje? cityAppSpecObje = _iCityAppSpecUseCase.Get(id);
+
+				CityDomaSpecEnti? cityDomaSpecEnti = null;
+
+				CityDomaSpecEntiVali.ValidateIfEntityExists(cityDomaSpecEnti);
+
+				iActionResult = new JsonResult(cityAppSpecObje)
+				{
+					StatusCode = StatusCodes.Status201Created
+				};
+			}
+			catch (InfrastructureLayerException infrastructureLayerException)
+			{
+				errorDetails = new ErrorWithDetails
+				{
+					Type = infrastructureLayerException.GetType().Name,
+					Message = infrastructureLayerException.Message
+				};
+
+				iActionResult = StatusCode((int)infrastructureLayerException.HttpStatusCode, errorDetails);
+			}
+			catch (DomainLayerException domainLayerException)
+			{
+				errorDetails = new ErrorWithDetails
+				{
+					Type = domainLayerException.GetType().Name,
+					Message = domainLayerException.Message
+				};
+
+				iActionResult = StatusCode((int)domainLayerException.HttpStatusCode, errorDetails);
+			}
+			catch (ApplicationLayerException applicationLayerException)
+			{
+				errorDetails = new ErrorWithDetails
+				{
+					Type = applicationLayerException.GetType().Name,
+					Message = applicationLayerException.Message
+				};
+
+				iActionResult = StatusCode((int)applicationLayerException.HttpStatusCode, errorDetails);
+			}
+			catch (Exception exception)
+			{
+				errorDetails = new ErrorWithDetails
+				{
+					Type = exception.GetType().Name,
+					Message = "An internal server error occurred: " + exception.Message
+				};
+
+				iActionResult = StatusCode((int)HttpStatusCode.InternalServerError, errorDetails);
+			}
+
+			return iActionResult;
 		}
 	}
 }
