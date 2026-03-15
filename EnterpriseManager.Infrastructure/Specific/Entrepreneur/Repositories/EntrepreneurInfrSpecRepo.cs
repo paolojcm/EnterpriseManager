@@ -81,7 +81,7 @@ namespace EnterpriseManager.Persistence.Specific.Entrepreneur.Repositories
 			";
 
 			Dictionary<string, object> parametersWithTheirValues = new Dictionary<string, object>();
-			parametersWithTheirValues.Add("@name", name);
+			parametersWithTheirValues.Add("@name", $"{name}");
 
 			Guid guid = Guid.NewGuid();
 			_iLogger.LogDebug($"{guid} | {{class}}: [EntrepreneurPersSpecRepo] -> {{method}}: [GetEntrepreneurByNameAsync]");

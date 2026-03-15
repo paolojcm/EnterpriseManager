@@ -25,6 +25,8 @@ using EnterpriseManager.Application.V1.Specific.State.Services;
 using EnterpriseManager.Application.V1.Specific.State.UseCases;
 using EnterpriseManager.Domain.Specific.City.Repositories;
 using EnterpriseManager.Domain.Specific.Country.Repositories;
+using EnterpriseManager.Domain.Specific.Enterprise.Repositories;
+using EnterpriseManager.Domain.Specific.EnterpriseContact.Repositories;
 using EnterpriseManager.Domain.Specific.Entrepreneur.Repositories;
 using EnterpriseManager.Domain.Specific.MeanOfContact.Repositories;
 using EnterpriseManager.Domain.Specific.OperatingSegment.Repositories;
@@ -33,6 +35,8 @@ using EnterpriseManager.Infrastructure.Specific.ILogger.Formatters;
 using EnterpriseManager.Infrastructure.Specific.MeanOfContact.Repositories;
 using EnterpriseManager.Persistence.Specific.City.Repositories;
 using EnterpriseManager.Persistence.Specific.Country.Repositories;
+using EnterpriseManager.Persistence.Specific.Enterprise.Repositories;
+using EnterpriseManager.Persistence.Specific.EnterpriseContact.Repositories;
 using EnterpriseManager.Persistence.Specific.Entrepreneur.Repositories;
 using EnterpriseManager.Persistence.Specific.OperatingSegment.Repositories;
 using EnterpriseManager.Persistence.Specific.State.Repositories;
@@ -55,26 +59,6 @@ namespace EnterpriseManager.Infrastructure.General
 	///</Summary>
 	public class Engine
 	{
-		private void LoadASimpleConfiguration(ConfigurationManager configurationManager)
-		{
-			string? fullPathToTheLogFile = configurationManager["WindowsService:FullPathToTheLogFile"];
-			int theMaximumNumberOfConcurrentTasks = configurationManager.GetValue<int>("WindowsService:TheMaximumNumberOfConcurrentTasks");
-		}
-
-		private void LoadAComplexConfiguration(ConfigurationManager configurationManager, IServiceCollection iServiceCollection)
-		{
-			//IConfigurationSection way2PimSiteIConfSect = configurationManager.GetSection("Way2Pim.Site");
-			//iServiceCollection.Configure<Way2PimSiteConfigurationSectionInfrSpecObje>(way2PimSiteIConfSect);
-		}
-
-		private void LoadConfigurations(ConfigurationManager configurationManager, IServiceCollection iServiceCollection)
-		{
-			//String? environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production";
-
-			LoadASimpleConfiguration(configurationManager);
-			LoadAComplexConfiguration(configurationManager, iServiceCollection);
-		}
-
 		private void LoadInfrastructureServices(IServiceCollection iServiceCollection)
 		{
 		}
@@ -104,6 +88,8 @@ namespace EnterpriseManager.Infrastructure.General
 		{
 			iServiceCollection.AddSingleton<ICityDomaSpecRepo, CityInfrSpecRepo>();
 			iServiceCollection.AddSingleton<ICountryDomaSpecRepo, CountryInfrSpecRepo>();
+			iServiceCollection.AddSingleton<IEnterpriseDomaSpecRepo, EnterpriseInfrSpecRepo>();
+			iServiceCollection.AddSingleton<IEnterpriseContactDomaSpecRepo, EnterpriseContactInfrSpecRepo>();
 			iServiceCollection.AddSingleton<IEntrepreneurDomaSpecRepo, EntrepreneurInfrSpecRepo>();
 			iServiceCollection.AddSingleton<IMeanOfContactDomaSpecRepo, MeanOfContactInfrSpecRepo>();
 			iServiceCollection.AddSingleton<IOperatingSegmentDomaSpecRepo, OperatingSegmentInfrSpecRepo>();
@@ -152,7 +138,6 @@ namespace EnterpriseManager.Infrastructure.General
 		public async Task StartAsync(string[] args)
 		{
 			WebApplicationBuilder webApplicationBuilder = WebApplication.CreateBuilder(args);
-			LoadConfigurations(webApplicationBuilder.Configuration, webApplicationBuilder.Services);
 			ConnectToTheDatabase(webApplicationBuilder.Services);
 			LoadPersistenceRepositories(webApplicationBuilder.Services);
 			LoadInfrastructureServices(webApplicationBuilder.Services);

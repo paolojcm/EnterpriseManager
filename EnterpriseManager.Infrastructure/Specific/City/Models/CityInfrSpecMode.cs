@@ -10,7 +10,7 @@ namespace EnterpriseManager.Infrastructure.Specific.City.Models
 		[ColumnMapping("Name")]
 		public string? Name { get; set; }
 
-		[ColumnMapping("StateId")]
+		[ColumnMapping("State_Id")]
 		public long StateId { get; set; }
 	}
 }

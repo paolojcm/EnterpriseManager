@@ -1,6 +1,6 @@
-﻿namespace EnterpriseManager.Application.V1.Specific.EnterpriseContact.Objects
+﻿namespace EnterpriseManager.Domain.Specific.EnterpriseContact.Entities
 {
-	public class EnterpriseContactAppSpecObje
+	public class EnterpriseContactDomaSpecEnti
 	{
 		public long MeanOfContactId { get; set; }
 

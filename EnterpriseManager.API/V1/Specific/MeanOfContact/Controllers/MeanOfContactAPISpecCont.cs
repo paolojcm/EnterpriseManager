@@ -12,7 +12,7 @@ namespace EnterpriseManager.API.V1.Specific.MeanOfContact.Controllers
 	///</Summary>
 	[ApiController]
 	[Route("api/v1/[controller]")]
-	[Tags("MeanOfContact")]
+	[Tags("Mean Of Contact")]
 	[SwaggerTag("This controller handles all MeanOfContact-related API requests.")]
 	public class MeanOfContactAPISpecCont : ControllerBase
 	{
@@ -33,7 +33,7 @@ namespace EnterpriseManager.API.V1.Specific.MeanOfContact.Controllers
 		}
 
 		/// <summary>
-		/// Get a MeanOfContact by Id.
+		/// Get a MeanOfContact by MeanOfContactId.
 		/// </summary>
 		/// <param id="id"></param>
 		/// <param name="Name asdadsas"></param>
@@ -116,7 +116,7 @@ namespace EnterpriseManager.API.V1.Specific.MeanOfContact.Controllers
 		}
 
 		/// <summary>
-		/// Get a MeanOfContact by Id.
+		/// Get a MeanOfContact by MeanOfContactId.
 		/// </summary>
 		/// <param meanOfContactAppSpecObje="name"></param>
 		/// <returns>A MeanOfContact.</returns>
@@ -198,7 +198,7 @@ namespace EnterpriseManager.API.V1.Specific.MeanOfContact.Controllers
 		}
 
 		/// <summary>
-		/// It inserts or updates a MeanOfContact by Id.
+		/// It inserts or updates a MeanOfContact by MeanOfContactId.
 		/// </summary>
 		/// <param meanOfContactAppSpecObje="meanOfContactAppSpecObje"></param>
 		/// <returns>True or False</returns>
@@ -284,7 +284,7 @@ namespace EnterpriseManager.API.V1.Specific.MeanOfContact.Controllers
 		}
 
 		/// <summary>
-		/// It deletes a MeanOfContact by Id.
+		/// It deletes a MeanOfContact by MeanOfContactId.
 		/// </summary>
 		/// <param id="id"></param>
 		/// <returns>True or False</returns>

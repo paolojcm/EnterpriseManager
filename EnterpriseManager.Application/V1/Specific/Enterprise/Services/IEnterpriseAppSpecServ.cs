@@ -4,6 +4,12 @@ namespace EnterpriseManager.Application.V1.Specific.Enterprise.Services
 {
 	public interface IEnterpriseAppSpecServ
 	{
-		EnterpriseAppSpecObje Get(long id);
+		Task<EnterpriseAppSpecObje> GetEnterpriseByIdAsync(long id);
+
+		Task<IEnumerable<EnterpriseAppSpecObje>> GetEnterprisesByNameAsync(string? name);
+
+		Task<bool> InsertOrUpdateEnterpriseAsync(EnterpriseAppSpecObje? enterpriseAppSpecObje);
+
+		Task<bool> DeleteEnterpriseByIdAsync(long id);
 	}
 }

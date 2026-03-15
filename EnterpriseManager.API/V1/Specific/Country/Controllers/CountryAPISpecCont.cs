@@ -33,7 +33,7 @@ namespace EnterpriseManager.API.V1.Specific.Country.Controllers
 		}
 
 		/// <summary>
-		/// Get a Country by Id.
+		/// Get a Country by MeanOfContactId.
 		/// </summary>
 		/// <param id="id"></param>
 		/// <param name="Name asdadsas"></param>
@@ -116,7 +116,7 @@ namespace EnterpriseManager.API.V1.Specific.Country.Controllers
 		}
 
 		/// <summary>
-		/// Get a Country by Id.
+		/// Get a Country by MeanOfContactId.
 		/// </summary>
 		/// <param countryAppSpecObje="name"></param>
 		/// <returns>A Country.</returns>
@@ -198,7 +198,7 @@ namespace EnterpriseManager.API.V1.Specific.Country.Controllers
 		}
 
 		/// <summary>
-		/// It inserts or updates a Country by Id.
+		/// It inserts or updates a Country by MeanOfContactId.
 		/// </summary>
 		/// <param countryAppSpecObje="countryAppSpecObje"></param>
 		/// <returns>True or False</returns>
@@ -284,7 +284,7 @@ namespace EnterpriseManager.API.V1.Specific.Country.Controllers
 		}
 
 		/// <summary>
-		/// It deletes a Country by Id.
+		/// It deletes a Country by MeanOfContactId.
 		/// </summary>
 		/// <param id="id"></param>
 		/// <returns>True or False</returns>

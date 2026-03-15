@@ -33,7 +33,7 @@ namespace EnterpriseManager.API.V1.Specific.City.Controllers
 		}
 
 		/// <summary>
-		/// Get a City by Id.
+		/// Get a City by MeanOfContactId.
 		/// </summary>
 		/// <param id="id"></param>
 		/// <param name="Name asdadsas"></param>
@@ -116,7 +116,7 @@ namespace EnterpriseManager.API.V1.Specific.City.Controllers
 		}
 
 		/// <summary>
-		/// Get a City by Id.
+		/// Get a City by MeanOfContactId.
 		/// </summary>
 		/// <param cityAppSpecObje="name"></param>
 		/// <returns>A City.</returns>
@@ -198,7 +198,7 @@ namespace EnterpriseManager.API.V1.Specific.City.Controllers
 		}
 
 		/// <summary>
-		/// It inserts or updates a City by Id.
+		/// It inserts or updates a City by MeanOfContactId.
 		/// </summary>
 		/// <param cityAppSpecObje="cityAppSpecObje"></param>
 		/// <returns>True or False</returns>
@@ -284,7 +284,7 @@ namespace EnterpriseManager.API.V1.Specific.City.Controllers
 		}
 
 		/// <summary>
-		/// It deletes a City by Id.
+		/// It deletes a City by MeanOfContactId.
 		/// </summary>
 		/// <param id="id"></param>
 		/// <returns>True or False</returns>

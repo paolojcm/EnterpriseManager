@@ -12,7 +12,7 @@ namespace EnterpriseManager.API.V1.Specific.OperatingSegment.Controllers
 	///</Summary>
 	[ApiController]
 	[Route("api/v1/[controller]")]
-	[Tags("OperatingSegment")]
+	[Tags("Operating Segment")]
 	[SwaggerTag("This controller handles all OperatingSegment-related API requests.")]
 	public class OperatingSegmentAPISpecCont : ControllerBase
 	{
@@ -33,7 +33,7 @@ namespace EnterpriseManager.API.V1.Specific.OperatingSegment.Controllers
 		}
 
 		/// <summary>
-		/// Get a OperatingSegment by Id.
+		/// Get a OperatingSegment by MeanOfContactId.
 		/// </summary>
 		/// <param id="id"></param>
 		/// <param name="Name asdadsas"></param>
@@ -116,7 +116,7 @@ namespace EnterpriseManager.API.V1.Specific.OperatingSegment.Controllers
 		}
 
 		/// <summary>
-		/// Get a OperatingSegment by Id.
+		/// Get a OperatingSegment by MeanOfContactId.
 		/// </summary>
 		/// <param operatingSegmentAppSpecObje="name"></param>
 		/// <returns>A OperatingSegment.</returns>
@@ -198,7 +198,7 @@ namespace EnterpriseManager.API.V1.Specific.OperatingSegment.Controllers
 		}
 
 		/// <summary>
-		/// It inserts or updates a OperatingSegment by Id.
+		/// It inserts or updates a OperatingSegment by MeanOfContactId.
 		/// </summary>
 		/// <param operatingSegmentAppSpecObje="operatingSegmentAppSpecObje"></param>
 		/// <returns>True or False</returns>
@@ -284,7 +284,7 @@ namespace EnterpriseManager.API.V1.Specific.OperatingSegment.Controllers
 		}
 
 		/// <summary>
-		/// It deletes a OperatingSegment by Id.
+		/// It deletes a OperatingSegment by MeanOfContactId.
 		/// </summary>
 		/// <param id="id"></param>
 		/// <returns>True or False</returns>

@@ -33,7 +33,7 @@ namespace EnterpriseManager.API.V1.Specific.Entrepreneur.Controllers
 		}
 
 		/// <summary>
-		/// Get a Entrepreneur by Id.
+		/// Get a Entrepreneur by MeanOfContactId.
 		/// </summary>
 		/// <param id="id"></param>
 		/// <param name="Name asdadsas"></param>
@@ -116,7 +116,7 @@ namespace EnterpriseManager.API.V1.Specific.Entrepreneur.Controllers
 		}
 
 		/// <summary>
-		/// Get a Entrepreneur by Id.
+		/// Get a Entrepreneur by MeanOfContactId.
 		/// </summary>
 		/// <param entrepreneurAppSpecObje="name"></param>
 		/// <returns>A Entrepreneur.</returns>
@@ -198,7 +198,7 @@ namespace EnterpriseManager.API.V1.Specific.Entrepreneur.Controllers
 		}
 
 		/// <summary>
-		/// It inserts or updates a Entrepreneur by Id.
+		/// It inserts or updates a Entrepreneur by MeanOfContactId.
 		/// </summary>
 		/// <param entrepreneurAppSpecObje="entrepreneurAppSpecObje"></param>
 		/// <returns>True or False</returns>
@@ -284,7 +284,7 @@ namespace EnterpriseManager.API.V1.Specific.Entrepreneur.Controllers
 		}
 
 		/// <summary>
-		/// It deletes a Entrepreneur by Id.
+		/// It deletes a Entrepreneur by MeanOfContactId.
 		/// </summary>
 		/// <param id="id"></param>
 		/// <returns>True or False</returns>

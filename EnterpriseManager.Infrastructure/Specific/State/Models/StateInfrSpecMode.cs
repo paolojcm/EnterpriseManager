@@ -13,7 +13,7 @@ namespace EnterpriseManager.Infrastructure.Specific.State.Models
 		[ColumnMapping("Name")]
 		public string? Name { get; set; }
 
-		[ColumnMapping("CountryId")]
+		[ColumnMapping("Country_Id")]
 		public long CountryId { get; set; }
 	}
 }

@@ -4,6 +4,12 @@ namespace EnterpriseManager.Application.V1.Specific.EnterpriseContact.Services
 {
 	public interface IEnterpriseContactAppSpecServ
 	{
-		EnterpriseContactAppSpecObje Get(long meanOfContactId, long enterpriseId);
+		Task<EnterpriseContactAppSpecObje> GetEnterpriseContactByMeanOfContactIdAndEnterpriseIdAsync(long meanOfContactId, long enterpriseId);
+
+		Task<IEnumerable<EnterpriseContactAppSpecObje>> GetEnterpriseContactsByEnterpriseIdAsync(long enterpriseId);
+
+		Task<bool> InsertOrUpdateEnterpriseContactAsync(EnterpriseContactAppSpecObje? enterpriseContactAppSpecObje);
+
+		Task<bool> DeleteEnterpriseContactByMeanOfContactIdAndEnterpriseIdAsync(long meanOfContactId, long enterpriseId);
 	}
 }

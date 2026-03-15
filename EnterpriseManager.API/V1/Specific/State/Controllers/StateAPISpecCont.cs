@@ -33,7 +33,7 @@ namespace EnterpriseManager.API.V1.Specific.State.Controllers
 		}
 
 		/// <summary>
-		/// Get a State by Id.
+		/// Get a State by MeanOfContactId.
 		/// </summary>
 		/// <param id="id"></param>
 		/// <param name="Name asdadsas"></param>
@@ -116,7 +116,7 @@ namespace EnterpriseManager.API.V1.Specific.State.Controllers
 		}
 
 		/// <summary>
-		/// Get a State by Id.
+		/// Get a State by MeanOfContactId.
 		/// </summary>
 		/// <param stateAppSpecObje="name"></param>
 		/// <returns>A State.</returns>
@@ -198,7 +198,7 @@ namespace EnterpriseManager.API.V1.Specific.State.Controllers
 		}
 
 		/// <summary>
-		/// It inserts or updates a State by Id.
+		/// It inserts or updates a State by MeanOfContactId.
 		/// </summary>
 		/// <param stateAppSpecObje="stateAppSpecObje"></param>
 		/// <returns>True or False</returns>
@@ -284,7 +284,7 @@ namespace EnterpriseManager.API.V1.Specific.State.Controllers
 		}
 
 		/// <summary>
-		/// It deletes a State by Id.
+		/// It deletes a State by MeanOfContactId.
 		/// </summary>
 		/// <param id="id"></param>
 		/// <returns>True or False</returns>
