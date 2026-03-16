@@ -3,9 +3,7 @@ EnterpriseManager.Application/obj
 EnterpriseManager.API/bin
 .vs
 EnterpriseManager.API/obj
-EnterpriseManager.Infrastructure/bin
-EnterpriseManager.Infrastructure/obj
 EnterpriseManager.Domain/bin
 EnterpriseManager.Domain/obj
-EnterpriseManager.Persistence/obj
-EnterpriseManager.Persistence/bin
+EnterpriseManager.Infrastructure/bin
+EnterpriseManager.Infrastructure/obj
